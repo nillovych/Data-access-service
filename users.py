@@ -37,3 +37,4 @@ class Admin(Moderator):
         super().__init__(name, surname, permissions)
 
         self.permissions['message_export'] = True
+
