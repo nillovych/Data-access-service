@@ -2,19 +2,26 @@ from abc import ABC, abstractmethod
 
 import psycopg2
 
-from conn_settings import POSTGRE_PARAMS  # PARAMETERS FOR DB-CONNECTION
+from conn_settings import POSTGRE_PARAMS  # parameters for connection to PostgreSQL
 from users import AbstractUser
 
 
 class DAO(ABC):
     def __init__(self, user: AbstractUser):
-        data = user.__dict__
-        self.permissions = user.permissions
-        data.pop('permissions')
+        user_data = user.__dict__
+        permission_data = user.permission.__dict__
+        user_data.pop('permission')
 
-        self.columns_users = ', '.join(data.keys())
-        self.values_users = "', '".join(str(value) for value in data.values())
+        self.columns_users, self.values_users = DAO._parser(user_data)
+        self.columns_permissions, self.values_permissions = DAO._parser(permission_data)
 
+        self.user_id = None
+
+    @staticmethod
+    def _parser(data):
+        _columns = ', '.join(data.keys())
+        _values = "', '".join(str(value) for value in data.values())
+        return _columns, _values
 
     @abstractmethod
     def create(self):
@@ -44,14 +51,15 @@ class PostgreDAO(DAO):
         try:
             with self.conn.cursor() as cursor:
 
-                cursor.execute(f"INSERT INTO users ({self.columns_users}) VALUES ('{self.values_users}');")
+                cursor.execute("INSERT INTO users ({}) VALUES ('{}');".format(self.columns_users, self.values_users))
 
-                user_id = cursor.lastrowid
+                cursor.execute('SELECT LASTVAL()')
+                self.user_id = cursor.fetchone()[0]
 
-                for column in self.permissions:
-
-                    value = self.permissions[column]
-                    cursor.execute(f"INSERT INTO permissions (user_id, {column}) VALUES ({user_id}, '{value}');")
+                cursor.execute(
+                    "INSERT INTO permissions (user_id, {}) VALUES ({}, '{}');".format(self.columns_permissions,
+                                                                                      self.user_id,
+                                                                                      self.values_permissions))
 
                 self.conn.commit()
 
@@ -60,10 +68,17 @@ class PostgreDAO(DAO):
             print("Failed to insert data:", error)
 
     def delete(self):
-        pass
+        try:
+            with self.conn.cursor() as cursor:
+                cursor.execute("DELETE FROM users WHERE id = {};".format(self.user_id))
+
+            self.conn.commit()
+
+            self.conn.close()
+
+        except psycopg2.Error as error:
+            self.conn.rollback()
+            print("Failed to delete user and associated permissions:", error)
 
     def update(self):
         pass
-
-    def __del__(self):
-        self.conn.close()
