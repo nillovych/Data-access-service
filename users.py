@@ -1,15 +1,18 @@
 import re
 from abc import ABC, abstractmethod
 
-from permissions import UserPermission, ModeratorPermission, AdminPermission
-
 
 class AbstractUser(ABC):
     def __init__(self, name: str, surname: str, email: str):
         self.name = name
         self.surname = surname
         self.email = AbstractUser._validate_email(email)
-        self.permission = self._set_permission()
+        self.permissions = {'write': False,
+                            'read': False,
+                            'delete': False,
+                            'post': False,
+                            'export': False}
+        self._set_permission()
 
     @staticmethod
     def _validate_email(email) -> str:
@@ -24,15 +27,25 @@ class AbstractUser(ABC):
 
 
 class User(AbstractUser):
+
     def _set_permission(self):
-        return UserPermission()
+        self.permissions['write'] = True
+        self.permissions['read'] = True
+        self.permissions['delete'] = True
 
 
 class Moderator(AbstractUser):
     def _set_permission(self):
-        return ModeratorPermission()
+        self.permissions['write'] = True
+        self.permissions['read'] = True
+        self.permissions['delete'] = True
+        self.permissions['post'] = True
 
 
 class Admin(AbstractUser):
     def _set_permission(self):
-        return AdminPermission()
+        self.permissions['write'] = True
+        self.permissions['read'] = True
+        self.permissions['delete'] = True
+        self.permissions['post'] = True
+        self.permissions['export'] = True
