@@ -1,19 +1,13 @@
 from databases import PostgreDAO
-from users import User, Admin, Moderator
+from users import User
 
-admin = Admin('Salivan', 'Ichkins', 'sally.ich@outlook.com')
-user = User('Stas', 'Checherry', 'same-stas-another-mail@outlook.com')
-moderator = Moderator('Stepan', 'Bandera', 'sexy-boy@ukr.net')
+dao = PostgreDAO()
 
-postgre_admn = PostgreDAO(admin)
+user = User(name='Vasyl', surname='Porechelin', email='mails@mail.com')
+# admin = Admin(name = 'Ivar', surname = 'Boneless', email = 'ivar.boneless@mail.com')
 
-postgre_user = PostgreDAO(user)
+#dao.create(user)
 
-postgre_moderator = PostgreDAO(moderator)
+#dao.update(user, name='Elvin', surname='Sobko')
 
-# postgre_moderator.create()
-
-# postgre_user.create()
-postgre_admn.create()
-
-postgre_admn.delete()
+#dao.delete(user)
