@@ -7,39 +7,30 @@ from users import AbstractUser
 
 
 class DAO(ABC):
-    def __init__(self, user: AbstractUser):
-        user_data = user.__dict__
-        permission_data = user.permission.__dict__
-        user_data.pop('permission')
-
-        self.columns_users, self.values_users = DAO._parser(user_data)
-        self.columns_permissions, self.values_permissions = DAO._parser(permission_data)
-
-        self.user_id = None
 
     @staticmethod
-    def _parser(data):
+    def _parsing(data):
         _columns = ', '.join(data.keys())
-        _values = "', '".join(str(value) for value in data.values())
-        return _columns, _values
+        _values = data.values()
+        _placeholders = ', '.join(['%s'] * len(data))
+
+        return _columns, _values, _placeholders
 
     @abstractmethod
-    def create(self):
+    def create(self, user: AbstractUser):
         pass
 
     @abstractmethod
-    def update(self):
+    def update(self, user: AbstractUser, **kwargs: dict):
         pass
 
     @abstractmethod
-    def delete(self):
+    def delete(self, user: AbstractUser):
         pass
 
 
 class PostgreDAO(DAO):
-    def __init__(self, user: AbstractUser):
-        super().__init__(user)
-
+    def __init__(self):
         try:
             self.db_params = POSTGRE_PARAMS
             self.conn = psycopg2.connect(**self.db_params)
@@ -47,38 +38,58 @@ class PostgreDAO(DAO):
         except psycopg2.Error:
             print('Failed to connect to PostgreSQL:', psycopg2.Error)
 
-    def create(self):
+    def create(self, user: AbstractUser):
         try:
             with self.conn.cursor() as cursor:
+                permissions_data = user.permissions
+                user_data = user.__dict__
+                user_data.pop('permissions')
 
-                cursor.execute("INSERT INTO users ({}) VALUES ('{}');".format(self.columns_users, self.values_users))
+                columns_user, values_user, placeholders_user = DAO._parsing(user_data)
+                columns_permissions, values_permissions, plcholders_permission = DAO._parsing(permissions_data)
+
+                user_query = f"INSERT INTO users ({columns_user}) VALUES ({placeholders_user});"
+                cursor.execute(user_query, tuple(user_data.values()))
 
                 cursor.execute('SELECT LASTVAL()')
-                self.user_id = cursor.fetchone()[0]
+                user_id = cursor.fetchone()[0]
+                setattr(user, 'id', user_id)
 
-                cursor.execute(
-                    "INSERT INTO permissions (user_id, {}) VALUES ({}, '{}');".format(self.columns_permissions,
-                                                                                      self.user_id,
-                                                                                      self.values_permissions))
+                permissions_query = f"INSERT INTO permissions (user_id, {columns_permissions}) VALUES (%s, {plcholders_permission});"
+                cursor.execute(permissions_query, (user_id,) + tuple(values_permissions))
 
-                self.conn.commit()
+            self.conn.commit()
 
         except psycopg2.Error as error:
             self.conn.rollback()
             print("Failed to insert data:", error)
 
-    def delete(self):
+    def delete(self, user: AbstractUser):
         try:
             with self.conn.cursor() as cursor:
-                cursor.execute("DELETE FROM users WHERE id = {};".format(self.user_id))
+                cursor.execute("DELETE FROM users WHERE id = %s;", (user.id,))
 
             self.conn.commit()
 
-            self.conn.close()
+        except psycopg2.Error as error:
+            self.conn.rollback()
+            print("Failed to delete user and associated permissions: ", error)
+
+    def update(self, user: AbstractUser, **kwargs: dict):
+        try:
+            with self.conn.cursor() as cursor:
+                for key, value in kwargs.items():
+                    cursor.execute(f"UPDATE users SET {key} = %s WHERE id = %s;",
+                                   (value, user.id))
+
+            self.conn.commit()
 
         except psycopg2.Error as error:
             self.conn.rollback()
-            print("Failed to delete user and associated permissions:", error)
+            print("Failed to upgrade user: ", error)
 
-    def update(self):
-        pass
+
+
+
+
+
