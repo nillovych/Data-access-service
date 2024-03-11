@@ -1,4 +1,4 @@
-# Description: Connection settings for the databases
+# Connection settings for the databases
 
 POSTGRE_PARAMS = {'host': 'host',
                   'database': 'db_name_postgre',
