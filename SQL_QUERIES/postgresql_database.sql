@@ -22,14 +22,3 @@ CREATE TABLE permissions (
     post_permission BOOLEAN,
     export_permission BOOLEAN
 );
-
-POSTGRE_PARAMS = {'host': 'localhost',
-                  'database': 'dao_postgres',
-                  'user': 'danyloyurkevych',
-                  'port': 5432}
-
-MYSQL_PARAMS = {'host': 'localhost',
-                'database': 'dao_mysql',
-                'password': 'password',
-                'user': 'root',
-                'port': 3306}
