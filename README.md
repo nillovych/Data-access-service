@@ -18,9 +18,9 @@ Data Access Service is a program designed to manage users with different permiss
     
 - **Database Interaction**
   - After creating a user instance and DAO, you can interact with the database using the following methods:
-    - `dao_instance.`**create**(user_instance): Add user data to the database.
-    - `dao_instance.`**delete**(user_instance): Remove user data from the database.
-    - `dao_instance.`**update**(user_instance): Update existing user data in the database.
+    - dao_instance.`**create**`(user_instance): Add user data to the database.
+    - dao_instance.`**delete**`(user_instance): Remove user data from the database.
+    - dao_instance.`**update**`(user_instance): Update existing user data in the database.
 
 ## Supported Databases
 
