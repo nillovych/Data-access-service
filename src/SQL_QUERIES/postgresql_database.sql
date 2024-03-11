@@ -20,5 +20,6 @@ CREATE TABLE permissions (
     read_permission BOOLEAN,
     delete_permission BOOLEAN,
     post_permission BOOLEAN,
-    export_permission BOOLEAN
+    export_permission BOOLEAN,
+    CONSTRAINT fk_user_id FOREIGN KEY (user_id) REFERENCES users(id)
 );

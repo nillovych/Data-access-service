@@ -5,16 +5,23 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="9b0b8e63-fac5-428e-941c-60b2484f2761" name="Changes" comment="Initial commit">
+      <change afterPath="$PROJECT_DIR$/src/conn_settings.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/databases.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/users.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/databases.py" beforeDir="false" afterPath="$PROJECT_DIR$/databases.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/SQL_QUERIES/mysql_database.sql" beforeDir="false" afterPath="$PROJECT_DIR$/src/SQL_QUERIES/mysql_database.sql" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/SQL_QUERIES/postgresql_database.sql" beforeDir="false" afterPath="$PROJECT_DIR$/src/SQL_QUERIES/postgresql_database.sql" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/conn_settings.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/databases.py" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/test_case.py" beforeDir="false" afterPath="$PROJECT_DIR$/test_case.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/users.py" beforeDir="false" afterPath="$PROJECT_DIR$/users.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/users.py" beforeDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
     <option name="LAST_RESOLUTION" value="IGNORE" />
   </component>
+  <component name="ChangesViewManager" show_ignored="true" />
   <component name="FileTemplateManagerImpl">
     <option name="RECENT_TEMPLATES">
       <list>
@@ -178,7 +185,28 @@
       <option name="project" value="LOCAL" />
       <updated>1710153900240</updated>
     </task>
-    <option name="localTasksCounter" value="15" />
+    <task id="LOCAL-00015" summary="Initial commit">
+      <created>1710154072731</created>
+      <option name="number" value="00015" />
+      <option name="presentableId" value="LOCAL-00015" />
+      <option name="project" value="LOCAL" />
+      <updated>1710154072731</updated>
+    </task>
+    <task id="LOCAL-00016" summary="Initial commit">
+      <created>1710154098289</created>
+      <option name="number" value="00016" />
+      <option name="presentableId" value="LOCAL-00016" />
+      <option name="project" value="LOCAL" />
+      <updated>1710154098289</updated>
+    </task>
+    <task id="LOCAL-00017" summary="Initial commit">
+      <created>1710154291948</created>
+      <option name="number" value="00017" />
+      <option name="presentableId" value="LOCAL-00017" />
+      <option name="project" value="LOCAL" />
+      <updated>1710154291948</updated>
+    </task>
+    <option name="localTasksCounter" value="18" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -204,6 +232,13 @@
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
+      <breakpoints>
+        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
+          <url>file://$PROJECT_DIR$/src/databases.py</url>
+          <line>88</line>
+          <option name="timeStamp" value="29" />
+        </line-breakpoint>
+      </breakpoints>
       <default-breakpoints>
         <breakpoint type="python-exception">
           <properties notifyOnTerminate="true" exception="BaseException">

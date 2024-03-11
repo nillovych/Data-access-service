@@ -1,13 +1,25 @@
-from databases import PostgreDAO
-from users import User
+from src.databases import PostgreDAO, MysqlDAO, CommonDAO
+from src.users import User
 
-dao = PostgreDAO()
+# Create user instance
+user = User(name='Persie', surname='Jackson', email='pers.jafdcffks@mail.com')
 
-user = User(name='Vasyl', surname='Porechelin', email='mails@mail.com')
-# admin = Admin(name = 'Ivar', surname = 'Boneless', email = 'ivar.boneless@mail.com')
+# Create DAO's instances
+postgre_dao = PostgreDAO()
+mysql_dao = MysqlDAO()
+common_dao = CommonDAO()
 
-#dao.create(user)
+# Create, update, delete user in MySQL
+mysql_dao.create(user)
+mysql_dao.update(user, name='Rico', surname='Miura')
+mysql_dao.delete(user)
 
-#dao.update(user, name='Elvin', surname='Sobko')
+# Create, update, delete user in PostgreSQL
+postgre_dao.create(user)
+postgre_dao.update(user, name='Rico', surname='Miura')
+postgre_dao.delete(user)
 
-#dao.delete(user)
+# Create, update, delete user in both databases
+common_dao.create(user)
+common_dao.update(user, name='Rico', surname='Miura')
+common_dao.delete(user)
