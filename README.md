@@ -9,6 +9,13 @@ Data Access Service is a program designed to manage users with different permiss
     - `User`: Represents a regular user.
     - `Moderator`: Represents a moderator.
     - `Admin`: Represents an administrator.
+   
+- **Data Access Objects**
+  - You can connect to various Databases through these classes:
+    - `PostgeDAO`: Connect to PostgreSQL.
+    - `MysqlDAO`: Connect to MySQL.
+    - `CommonDAO`: Connect to both Databases.
+    
 - **Database Interaction**
   - After creating a user instance, you can interact with the database using the following methods:
     - `create()`: Add user data to the database.
@@ -18,5 +25,5 @@ Data Access Service is a program designed to manage users with different permiss
 ## Supported Databases
 
 - PostgreSQL
-- MongoDB
 - MySQL
+- MongoDB (not yet)
